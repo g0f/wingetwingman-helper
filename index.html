@@ -195,8 +195,6 @@
             margin: 10px 0;
             font-size: 14px;
             border: 1px solid #333;
-            overflow-x: auto;
-            white-space: nowrap;
         }
 
         .winget-run-example .prompt {
@@ -209,18 +207,6 @@
 
         .winget-run-example .highlight-red {
             color: #ff6b6b;
-        }
-
-        .highlight {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 4px solid #ffc107;
-            margin: 15px 0;
-        }
-
-        .highlight strong {
-            color: #856404;
         }
 
         .options-section {
@@ -403,20 +389,19 @@
                             <li>Open <strong>PowerShell</strong> or <strong>Command Prompt</strong></li>
                             <li>Type the search command with your app name:</li>
                         </ol>
-
+                        <div class="powershell-example">
 <span class="prompt">PS C:\></span> <span class="command">winget search "7-zip"</span>
                         </div>
                         <ol class="steps" style="counter-reset: step-counter 2;">
                             <li>Look for the <strong>Id</strong> column in the results</li>
                             <li>Copy the exact ID (e.g., <code>7zip.7zip</code>)</li>
                         </ol>
-						                        <div class="powershell-output">Name              Id                    Version          Match                   Source
-						----------------------------------------------------------------------------------------
-						7-Zip             <span class="highlight-red">7zip.7zip</span>             24.09            ProductCode: 7-zip     winget
-						7-Zip ZS          mcmilk.7zip-zstd      24.09 ZS v1.5.7  Tag: 7-zip             winget
-						7-Zip Alpha (exe) 7zip.7zip.Alpha.exe   24.01            Tag: 7-zip             winget
-						7-Zip Alpha (msi) 7zip.7zip.Alpha.msi   24.01.00.0       Tag: 7-zip             winget</div>
-												<div class="powershell-example">
+                        <div class="powershell-output">Name              Id                    Version          Match                   Source
+----------------------------------------------------------------------------------------
+7-Zip             <span class="highlight-red">7zip.7zip</span>             24.09            ProductCode: 7-zip     winget
+7-Zip ZS          mcmilk.7zip-zstd      24.09 ZS v1.5.7  Tag: 7-zip             winget
+7-Zip Alpha (exe) 7zip.7zip.Alpha.exe   24.01            Tag: 7-zip             winget
+7-Zip Alpha (msi) 7zip.7zip.Alpha.msi   24.01.00.0       Tag: 7-zip             winget</div>
                     </div>
                     <div class="method">
                         <h4>Method 2 - use winget.run</h4>
