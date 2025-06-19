@@ -224,8 +224,7 @@
             background: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 8px;
-            padding: 30px 20px 20px 20px;
-            position: relative;
+            padding: 15px 20px;
             font-family: 'Courier New', monospace;
             font-size: 14px;
             line-height: 1.5;
@@ -236,9 +235,19 @@
             overflow-x: auto;
         }
 
+        .script-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .script-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
         .copy-btn, .download-btn-script {
-            position: absolute;
-            top: 10px;
             background: #0078d4;
             color: white;
             border: none;
@@ -247,14 +256,6 @@
             cursor: pointer;
             font-size: 12px;
             transition: background 0.3s ease;
-        }
-
-        .copy-btn {
-            right: 10px;
-        }
-
-        .download-btn-script {
-            right: 70px;
         }
 
         .copy-btn:hover, .download-btn-script:hover {
@@ -411,27 +412,39 @@
         <!-- Generated Scripts -->
         <div class="card scripts-section" id="scriptsSection">
             <div class="script-item">
-                <div class="script-title">Detection Script</div>
+                <div class="script-header">
+                    <div class="script-title">Detection Script</div>
+                    <div class="script-buttons">
+                        <button class="download-btn-script" onclick="downloadDetectionScript()">Download</button>
+                        <button class="copy-btn" onclick="copyToClipboard('detectionScript')">Copy</button>
+                    </div>
+                </div>
                 <div class="code-block">
-                    <button class="download-btn-script" onclick="downloadDetectionScript()">Download</button>
-                    <button class="copy-btn" onclick="copyToClipboard('detectionScript')">Copy</button>
                     <div id="detectionScript"></div>
                 </div>
                 <p style="margin-top: 10px; color: #666; font-size: 14px;">Upload this .ps1 file as your detection rule in Intune</p>
             </div>
 
             <div class="script-item">
-                <div class="script-title">Install Command</div>
+                <div class="script-header">
+                    <div class="script-title">Install Command</div>
+                    <div class="script-buttons">
+                        <button class="copy-btn" onclick="copyToClipboard('installCommand')">Copy</button>
+                    </div>
+                </div>
                 <div class="code-block">
-                    <button class="copy-btn" onclick="copyToClipboard('installCommand')">Copy</button>
                     <div id="installCommand"></div>
                 </div>
             </div>
 
             <div class="script-item">
-                <div class="script-title">Uninstall Command</div>
+                <div class="script-header">
+                    <div class="script-title">Uninstall Command</div>
+                    <div class="script-buttons">
+                        <button class="copy-btn" onclick="copyToClipboard('uninstallCommand')">Copy</button>
+                    </div>
+                </div>
                 <div class="code-block">
-                    <button class="copy-btn" onclick="copyToClipboard('uninstallCommand')">Copy</button>
                     <div id="uninstallCommand"></div>
                 </div>
                 <p style="margin-top: 10px; color: #666; font-size: 14px;">Use "Interactive Uninstall" option above for apps that don't support silent uninstall</p>
@@ -531,7 +544,7 @@ if ($Apps) {
     return "Installed!"
 }`;
 
-            document.getElementById('detectionScript').textContent = detectionScript;
+            document.getElementById('detectionScript').textContent = detectionScript.trim();
             updateCommands();
         }
 
@@ -561,8 +574,8 @@ if ($Apps) {
                 uninstallCommand = `Invoke-AppDeployToolkit.exe -wingetID "${packageId}" -DeploymentType Uninstall -DeployMode Silent`;
             }
 
-            document.getElementById('installCommand').textContent = installCommand;
-            document.getElementById('uninstallCommand').textContent = uninstallCommand;
+            document.getElementById('installCommand').textContent = installCommand.trim();
+            document.getElementById('uninstallCommand').textContent = uninstallCommand.trim();
         }
 
         async function copyToClipboard(elementId) {
@@ -571,7 +584,10 @@ if ($Apps) {
             
             try {
                 await navigator.clipboard.writeText(text);
-                const btn = element.parentNode.querySelector('.copy-btn');
+                
+                // Find the copy button for this specific element
+                const scriptItem = element.closest('.script-item');
+                const btn = scriptItem.querySelector('.copy-btn');
                 const originalText = btn.textContent;
                 btn.textContent = 'Copied!';
                 btn.classList.add('copied');
