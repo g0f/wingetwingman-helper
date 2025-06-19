@@ -162,17 +162,6 @@
             color: #8be9fd;
         }
 
-        .screenshot-placeholder {
-            background: #e9ecef;
-            border: 2px dashed #adb5bd;
-            border-radius: 6px;
-            padding: 30px;
-            text-align: center;
-            color: #6c757d;
-            font-style: italic;
-            margin: 15px 0;
-        }
-
         .highlight {
             background: #fff3cd;
             padding: 15px;
@@ -235,7 +224,7 @@
             background: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 8px;
-            padding: 20px;
+            padding: 30px 20px 20px 20px;
             position: relative;
             font-family: 'Courier New', monospace;
             font-size: 14px;
@@ -329,6 +318,11 @@
             .method {
                 padding: 15px;
             }
+
+            .guide-section > div[style*="grid"] {
+                grid-template-columns: 1fr !important;
+                gap: 20px;
+            }
         }
     </style>
 </head>
@@ -344,38 +338,38 @@
             <div class="guide-section">
                 <h3>How to Find Winget Package IDs</h3>
                 
-                <div class="method">
-                    <h4>Method 1 - use PowerShell</h4>
-                    <ol class="steps">
-                        <li>Open <strong>PowerShell</strong> or <strong>Command Prompt</strong></li>
-                        <li>Type the search command with your app name:</li>
-                    </ol>
-                    <div class="code-example">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div class="method">
+                        <h4>Method 1 - use PowerShell</h4>
+                        <ol class="steps">
+                            <li>Open <strong>PowerShell</strong> or <strong>Command Prompt</strong></li>
+                            <li>Type the search command with your app name:</li>
+                        </ol>
+                        <div class="code-example">
 <span class="prompt">PS C:\></span> <span class="command">winget search "google chrome"</span>
+                        </div>
+                        <ol class="steps" style="counter-reset: step-counter 2;">
+                            <li>Look for the <strong>Id</strong> column in the results</li>
+                            <li>Copy the exact ID (e.g., <code>Google.Chrome</code>)</li>
+                        </ol>
+                        
+                        <img src="./images/powershell-search.png" alt="PowerShell winget search results" style="width: 100%; max-width: 800px; border-radius: 6px; border: 1px solid #ddd;">
+                        
+                        <div class="highlight">
+                            <strong>Example:</strong> Searching for "chrome" will show <code>Google.Chrome</code> in the Id column
+                        </div>
                     </div>
-                    <ol class="steps" style="counter-reset: step-counter 2;">
-                        <li>Look for the <strong>Id</strong> column in the results</li>
-                        <li>Copy the exact ID (e.g., <code>Google.Chrome</code>)</li>
-                    </ol>
-                    
-                    <img src="./images/powershell-search.png" alt="PowerShell winget search results" style="width: 100%; max-width: 800px; border-radius: 6px; border: 1px solid #ddd;">
-                    
-                    <div class="highlight">
-                        <strong>Example:</strong> Searching for "chrome" will show <code>Google.Chrome</code> in the Id column
+                    <div class="method">
+                        <h4>Method 2 - use winget.run</h4>
+                        <ol class="steps">
+                            <li>Go to <a href="https://winget.run" target="_blank"><strong>winget.run</strong></a></li>
+                            <li>Search for your application</li>
+                            <li>Click on the package you want</li>
+                            <li>Copy the package ID from the page</li>
+                        </ol>
+                        <img src="./images/wingetrun-search.png" alt="PowerShell winget search results" style="width: 100%; max-width: 800px; border-radius: 6px; border: 1px solid #ddd;">
+                        
                     </div>
-                </div>
-
-                <div class="method">
-                    <h4>Method 2 - use winget.run</h4>
-                    <ol class="steps">
-                        <li>Go to <a href="https://winget.run" target="_blank"><strong>winget.run</strong></a></li>
-                        <li>Search for your application</li>
-                        <li>Click on the package you want</li>
-                        <li>Copy the package ID from the page</li>
-                    </ol>
-
-                    <img src="./images/wingetrun-search.png" alt="PowerShell winget search results" style="width: 100%; max-width: 800px; border-radius: 6px; border: 1px solid #ddd;">
-                    
                 </div>
             </div>
         </div>
@@ -384,15 +378,11 @@
         <div class="card">
             <h3 style="margin-bottom: 20px;">Enter Winget Package ID</h3>
             <div class="id-container">
-                <input type="text" class="id-input" placeholder="Enter winget ID (e.g., Google.Chrome, 7zip.7zip, Microsoft.Teams)" id="idInput">
+                <input type="text" class="id-input" placeholder="Enter winget ID" id="idInput">
                 <button class="id-btn" onclick="useDirectId()">Generate</button>
             </div>
 
             <div id="errorMessage" class="error-message hidden"></div>
-
-            <div id="selectedPackage" class="hidden" style="background: #e8f5e8; padding: 15px; border-radius: 6px; margin-top: 15px;">
-                <strong>Selected Package:</strong> <span id="packageDisplay"></span>
-            </div>
 
             <!-- Options -->
             <div class="options-section" id="optionsSection">
@@ -407,6 +397,12 @@
                         <input type="checkbox" id="versionSpecific" onchange="updateCommands()">
                         Install specific version:
                         <input type="text" class="version-input" id="versionNumber" placeholder="e.g. 1.2.3" onchange="updateCommands()">
+                    </label>
+                </div>
+                <div class="option-group">
+                    <label>
+                        <input type="checkbox" id="interactiveUninstall" onchange="updateCommands()">
+                        Interactive Uninstall (for apps without silent uninstall support)
                     </label>
                 </div>
             </div>
@@ -438,6 +434,7 @@
                     <button class="copy-btn" onclick="copyToClipboard('uninstallCommand')">Copy</button>
                     <div id="uninstallCommand"></div>
                 </div>
+                <p style="margin-top: 10px; color: #666; font-size: 14px;">Use "Interactive Uninstall" option above for apps that don't support silent uninstall</p>
             </div>
         </div>
 
@@ -491,10 +488,6 @@
             const packageName = packageId.split('.').pop() || packageId;
             selectedPackage = { id: packageId, name: packageName };
             
-            // Show selected package
-            document.getElementById('packageDisplay').textContent = `${packageName} (${packageId})`;
-            document.getElementById('selectedPackage').classList.remove('hidden');
-            
             // Show options and scripts sections
             document.getElementById('optionsSection').style.display = 'block';
             document.getElementById('scriptsSection').style.display = 'block';
@@ -511,7 +504,6 @@
 
             const detectionScript = `# Sample Detection Script for WingetWingman
 # Original author: https://github.com/Romanitho/Winget-Install
-# Package: ${packageName}
 $AppToDetect = "${packageId}"
 
 Function Get-WingetCmd {
@@ -550,6 +542,7 @@ if ($Apps) {
             const autoUpdate = document.getElementById('autoUpdateEnabled').checked;
             const versionSpecific = document.getElementById('versionSpecific').checked;
             const versionNumber = document.getElementById('versionNumber').value.trim();
+            const interactiveUninstall = document.getElementById('interactiveUninstall').checked;
 
             let installCommand = `Invoke-AppDeployToolkit.exe -wingetID "${packageId}" -DeploymentType Install -DeployMode Silent`;
             
@@ -561,7 +554,12 @@ if ($Apps) {
                 installCommand += ` -Version "${versionNumber}"`;
             }
 
-            const uninstallCommand = `Invoke-AppDeployToolkit.exe -wingetID "${packageId}" -DeploymentType Uninstall -DeployMode Silent`;
+            let uninstallCommand;
+            if (interactiveUninstall) {
+                uninstallCommand = `%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\PowerShell.exe -ExecutionPolicy Bypass -NoProfile -File Invoke-ServiceUI.ps1 -wingetID "${packageId}" -DeploymentType Uninstall`;
+            } else {
+                uninstallCommand = `Invoke-AppDeployToolkit.exe -wingetID "${packageId}" -DeploymentType Uninstall -DeployMode Silent`;
+            }
 
             document.getElementById('installCommand').textContent = installCommand;
             document.getElementById('uninstallCommand').textContent = uninstallCommand;
