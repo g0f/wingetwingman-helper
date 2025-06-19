@@ -345,7 +345,7 @@
                 <h3>How to Find Winget Package IDs</h3>
                 
                 <div class="method">
-                    <h4>Method 1: Using PowerShell (Recommended)</h4>
+                    <h4>Method 1 - use PowerShell</h4>
                     <ol class="steps">
                         <li>Open <strong>PowerShell</strong> or <strong>Command Prompt</strong></li>
                         <li>Type the search command with your app name:</li>
@@ -358,9 +358,7 @@
                         <li>Copy the exact ID (e.g., <code>Google.Chrome</code>)</li>
                     </ol>
                     
-                    <div class="screenshot-placeholder">
-                        PowerShell window showing: winget search results with Name, Id, Version, and Source columns
-                    </div>
+                    <img src="./images/powershell-search.png" alt="PowerShell winget search results" style="width: 100%; max-width: 800px; border-radius: 6px; border: 1px solid #ddd;">
                     
                     <div class="highlight">
                         <strong>Example:</strong> Searching for "chrome" will show <code>Google.Chrome</code> in the Id column
@@ -368,17 +366,16 @@
                 </div>
 
                 <div class="method">
-                    <h4>Method 2: Using winget.run Website</h4>
+                    <h4>Method 2 - use winget.run</h4>
                     <ol class="steps">
                         <li>Go to <a href="https://winget.run" target="_blank"><strong>winget.run</strong></a></li>
                         <li>Search for your application</li>
                         <li>Click on the package you want</li>
                         <li>Copy the package ID from the page</li>
                     </ol>
+
+                    <img src="./images/wingetrun-search.png" alt="PowerShell winget search results" style="width: 100%; max-width: 800px; border-radius: 6px; border: 1px solid #ddd;">
                     
-                    <div class="screenshot-placeholder">
-                        winget.run website showing search results with package cards and IDs clearly visible
-                    </div>
                 </div>
             </div>
         </div>
