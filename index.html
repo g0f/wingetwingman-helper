@@ -299,57 +299,6 @@
             display: none;
         }
 
-        /* Lightbox Modal */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            cursor: pointer;
-        }
-
-        .lightbox.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .lightbox-image {
-            max-width: 95%;
-            max-height: 95%;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .lightbox-close:hover {
-            opacity: 0.7;
-        }
-
-        .clickable-image {
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-
-        .clickable-image:hover {
-            opacity: 0.8;
-        }
-
         @media (max-width: 1024px) {
             .guide-section > div[style*="grid"] {
                 grid-template-columns: 1fr !important;
@@ -406,17 +355,19 @@
                             <li>Type the search command with your app name:</li>
                         </ol>
                         <div class="code-example">
-<span class="prompt">PS C:\></span> <span class="command">winget search "google chrome"</span>
+<span class="prompt">PS C:\></span> <span class="command">winget search "7-zip"</span>
                         </div>
                         <ol class="steps" style="counter-reset: step-counter 2;">
                             <li>Look for the <strong>Id</strong> column in the results</li>
-                            <li>Copy the exact ID (e.g., <code>Google.Chrome</code>)</li>
+                            <li>Copy the exact ID (e.g., <code>7zip.7zip</code>)</li>
                         </ol>
                         
-                        <img src="./images/powershell-search.png" alt="PowerShell winget search results" class="clickable-image" style="width: 100%; border-radius: 6px; border: 1px solid #ddd; margin: 15px 0;" onclick="openLightbox(this.src, this.alt)">
+						<span>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Version&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Match&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Source</span><br>
+						<span>----------------------------------------------------------------------------------------------------------</span><br>
+						<span>7-Zip&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="border:1px solid red; display:inline-block;">7zip.7zip</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 24.05.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tag: 7-zip&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; winget</span>
                         
                         <div class="highlight">
-                            <strong>Example:</strong> Searching for "chrome" will show <code>Google.Chrome</code> in the Id column
+                            <strong>Example:</strong> Searching for "7-zip" will show <code>7zip.7zip</code> in the Id column
                         </div>
                     </div>
                     <div class="method">
@@ -427,7 +378,7 @@
                             <li>Click on the package you want</li>
                             <li>Copy the package ID from the page</li>
                         </ol>
-                        <img src="./images/wingetrun-search.png" alt="winget.run search results" class="clickable-image" style="width: 100%; border-radius: 6px; border: 1px solid #ddd; margin: 15px 0;" onclick="openLightbox(this.src, this.alt)">
+                        <span style="color:#c5c5c5;">&gt; <span style="color:#dcdcaa;">winget</span> install -e --id <span style="border:1px solid red; display:inline-block;">7zip.7zip</span></span>
                         
                     </div>
                 </div>
