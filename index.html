@@ -723,8 +723,14 @@ if ($Apps) {
 
         // Lightbox functionality
         function openLightbox(src, alt) {
+            console.log('Opening lightbox with:', src, alt); // Debug line
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightbox-image');
+            
+            if (!lightbox || !lightboxImage) {
+                console.error('Lightbox elements not found');
+                return;
+            }
             
             lightboxImage.src = src;
             lightboxImage.alt = alt;
