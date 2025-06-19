@@ -299,6 +299,57 @@
             display: none;
         }
 
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-image {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            opacity: 0.7;
+        }
+
+        .clickable-image {
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .clickable-image:hover {
+            opacity: 0.8;
+        }
+
         @media (max-width: 1024px) {
             .guide-section > div[style*="grid"] {
                 grid-template-columns: 1fr !important;
@@ -362,7 +413,7 @@
                             <li>Copy the exact ID (e.g., <code>Google.Chrome</code>)</li>
                         </ol>
                         
-                        <img src="./images/powershell-search.png" alt="PowerShell winget search results" style="width: 100%; border-radius: 6px; border: 1px solid #ddd; margin: 15px 0;">
+                        <img src="./images/powershell-search.png" alt="PowerShell winget search results" class="clickable-image" style="width: 100%; border-radius: 6px; border: 1px solid #ddd; margin: 15px 0;" onclick="openLightbox(this.src, this.alt)">
                         
                         <div class="highlight">
                             <strong>Example:</strong> Searching for "chrome" will show <code>Google.Chrome</code> in the Id column
@@ -376,7 +427,7 @@
                             <li>Click on the package you want</li>
                             <li>Copy the package ID from the page</li>
                         </ol>
-                        <img src="./images/wingetrun-search.png" alt="winget.run search results" style="width: 100%; border-radius: 6px; border: 1px solid #ddd; margin: 15px 0;">
+                        <img src="./images/wingetrun-search.png" alt="winget.run search results" class="clickable-image" style="width: 100%; border-radius: 6px; border: 1px solid #ddd; margin: 15px 0;" onclick="openLightbox(this.src, this.alt)">
                         
                     </div>
                 </div>
@@ -669,6 +720,34 @@ if ($Apps) {
         function hideError() {
             document.getElementById('errorMessage').classList.add('hidden');
         }
+
+        // Lightbox functionality
+        function openLightbox(src, alt) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            
+            lightboxImage.src = src;
+            lightboxImage.alt = alt;
+            lightbox.classList.add('active');
+            
+            // Prevent body scroll when lightbox is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
     </script>
 </body>
 </html>
