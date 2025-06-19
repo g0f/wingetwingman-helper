@@ -724,11 +724,15 @@ if ($Apps) {
         // Lightbox functionality
         function openLightbox(src, alt) {
             console.log('Opening lightbox with:', src, alt); // Debug line
+            console.log('Looking for lightbox element...'); // Debug
             const lightbox = document.getElementById('lightbox');
+            console.log('Lightbox element:', lightbox); // Debug
             const lightboxImage = document.getElementById('lightbox-image');
+            console.log('Lightbox image element:', lightboxImage); // Debug
             
             if (!lightbox || !lightboxImage) {
                 console.error('Lightbox elements not found');
+                console.log('All elements with id containing lightbox:', document.querySelectorAll('[id*="lightbox"]'));
                 return;
             }
             
