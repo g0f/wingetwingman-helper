@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -299,9 +299,17 @@
             display: none;
         }
 
+        @media (max-width: 1024px) {
+            .guide-section > div[style*="grid"] {
+                grid-template-columns: 1fr !important;
+                gap: 30px;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
+                max-width: 100%;
             }
 
             .header h1 {
@@ -339,7 +347,7 @@
             <div class="guide-section">
                 <h3>How to Find Winget Package IDs</h3>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
                     <div class="method">
                         <h4>Method 1 - use PowerShell</h4>
                         <ol class="steps">
@@ -354,7 +362,7 @@
                             <li>Copy the exact ID (e.g., <code>Google.Chrome</code>)</li>
                         </ol>
                         
-                        <img src="./images/powershell-search.png" alt="PowerShell winget search results" style="width: 100%; max-width: 800px; border-radius: 6px; border: 1px solid #ddd;">
+                        <img src="./images/powershell-search.png" alt="PowerShell winget search results" style="width: 100%; border-radius: 6px; border: 1px solid #ddd; margin: 15px 0;">
                         
                         <div class="highlight">
                             <strong>Example:</strong> Searching for "chrome" will show <code>Google.Chrome</code> in the Id column
@@ -368,7 +376,7 @@
                             <li>Click on the package you want</li>
                             <li>Copy the package ID from the page</li>
                         </ol>
-                        <img src="./images/wingetrun-search.png" alt="PowerShell winget search results" style="width: 100%; max-width: 800px; border-radius: 6px; border: 1px solid #ddd;">
+                        <img src="./images/wingetrun-search.png" alt="winget.run search results" style="width: 100%; border-radius: 6px; border: 1px solid #ddd; margin: 15px 0;">
                         
                     </div>
                 </div>
