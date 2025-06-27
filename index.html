@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WingetWingman Helper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 30px;
+        }
+
+        .card h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 400;
+        }
+
+        .guide-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            border-left: 3px solid #3498db;
+        }
+
+        .methods-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .method {
+            padding: 15px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .method h4 {
+            color: #3498db;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .steps li {
+            counter-increment: step-counter;
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #3498db;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .id-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .id-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .id-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+        }
+
+        .option-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .option-group input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .version-input,
+        .custom-input {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            flex: 1;
+            font-size: 13px;
+        }
+
+        .results-section {
+            grid-column: 1 / -1;
+            border-top: 2px solid #f0f0f0;
+            padding-top: 30px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .script-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .script-header {
+            background: #34495e;
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .script-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .script-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .copy-btn,
+        .download-btn-script {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover,
+        .download-btn-script:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .copy-btn.copied,
+        .download-btn-script.copied {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            overflow-x: auto;
+            min-height: 100px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .powershell-example {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 10px 12px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            margin: 8px 0;
+            font-size: 12px;
+        }
+
+        .powershell-example .command {
+            color: #f39c12;
+        }
+
+        .powershell-output {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 10px 12px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            margin: 8px 0;
+            font-size: 11px;
+            white-space: pre;
+        }
+
+        .powershell-output .highlight-red {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .download-section {
+            text-align: center;
+            background: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            padding: 25px;
+        }
+
+        .download-section h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #2980b9;
+        }
+
+        .error-message {
+            background: #e74c3c;
+            color: white;
+            border-radius: 4px;
+            padding: 12px;
+            margin: 15px 0;
+            border: none;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .github-link {
+            color: #7f8c8d;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .github-link:hover {
+            color: #3498db;
+        }
+
+        .script-note {
+            padding: 8px 15px;
+            background: #ecf0f1;
+            color: #7f8c8d;
+            font-size: 11px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        code {
+            background: #ecf0f1;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>WingetWingman Helper</h1>
+            <p>Generate deployment scripts from winget package IDs</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- Left Column: How to Find IDs -->
+            <div class="card">
+                <div class="guide-section">
+                    <h3>How to Find Winget Package IDs</h3>
+
+                    <div class="methods-container">
+                        <div class="method">
+                            <h4>Method 1 - PowerShell</h4>
+                            <ol class="steps">
+                                <li>Open <strong>PowerShell</strong></li>
+                                <li>Search for your app:</li>
+                            </ol>
+                            <div class="powershell-example">
+                                <span class="prompt">PS C:\></span> <span class="command">winget search "7-zip"</span>
+                            </div>
+                            <ol class="steps" style="counter-reset: step-counter 2;">
+                                <li>Copy the <strong>Id</strong> column value</li>
+                            </ol>
+                            <div class="powershell-output">Name      Id             Version  Source
+7-Zip     <span class="highlight-red">7zip.7zip</span>      24.09    winget</div>
+                        </div>
+
+                        <div class="method">
+                            <h4>Method 2 - Online Tools</h4>
+                            <ol class="steps">
+                                <li>Use one of these web tools to find packages:</li>
+                            </ol>
+                            <div style="margin: 10px 0; padding: 12px; background: #f8f9fa; border-radius: 4px; border-left: 3px solid #3498db;">
+                                <div style="margin-bottom: 8px;">
+                                    <a href="https://winget.run" target="_blank" style="color: #3498db; font-weight: 500; text-decoration: none;">winget.run</a>
+                                    <span style="color: #7f8c8d; font-size: 12px; margin-left: 8px;">- Popular package browser</span>
+                                </div>
+                                <div>
+                                    <a href="https://winstall.app" target="_blank" style="color: #3498db; font-weight: 500; text-decoration: none;">winstall.app</a>
+                                    <span style="color: #7f8c8d; font-size: 12px; margin-left: 8px;">- GUI for winget packages</span>
+                                </div>
+                            </div>
+                            <ol class="steps" style="counter-reset: step-counter 1;">
+                                <li>Search for your application</li>
+                                <li>Copy the package ID</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Package ID Input & Options -->
+            <div class="card">
+                <h3>Enter Package ID & Configure Options</h3>
+                <div class="id-container">
+                    <input type="text" class="id-input" placeholder="Enter winget package ID (e.g., 7zip.7zip)" id="idInput">
+                </div>
+
+                <div id="errorMessage" class="error-message hidden"></div>
+
+                <div class="options-grid">
+                    <div class="option-group">
+                        <label>
+                            <input type="checkbox" id="autoUpdateEnabled">
+                            Enable AutoUpdate
+                        </label>
+                    </div>
+
+                    <div class="option-group">
+                        <label>
+                            <input type="checkbox" id="interactiveUninstall">
+                            Interactive Uninstall
+                        </label>
+                    </div>
+
+                    <div class="option-group">
+                        <label>
+                            <input type="checkbox" id="versionSpecific">
+                            Specific Version
+                        </label>
+                        <div class="input-row" id="versionRow" style="display: none;">
+                            <input type="text" class="version-input" id="versionNumber" placeholder="e.g., 1.2.3">
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label>
+                            <input type="checkbox" id="customArgs">
+                            Custom Arguments
+                        </label>
+                        <div class="input-row" id="customRow" style="display: none;">
+                            <input type="text" class="custom-input" id="customInput">
+                        </div>
+                        <div id="customDisclaimer" style="display: none; margin-top: 8px; font-size: 11px; line-height: 1.3;">
+                            Custom arguments can be finicky - test carefully before deploying to end-users<br>
+                            Since Intune launches via CMD, enclose multiple arguments or strings with spaces in <span style="color: red;">escaped quotes</span>.<br><br>
+                            Example: <br><br> &quot;<span style="color: red;">\&quot;</span>network=internal.lan auto_update=true<span style="color: red;">\&quot;</span>&quot; <br><br>
+                            Use spaces to separate individual arguments within the quoted string. The outer quotation mark represents the beginning and end of the -Custom parameter. <br><br>
+                            The quotes for the Custom parameter will be added automatically to the Install command generated below. Just start and finish with <b>\&quot;</b> and you're set.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="card results-section">
+            <h3 style="text-align: center; margin-bottom: 15px;">Generated Scripts & Commands</h3>
+            <p style="text-align: center; margin-bottom: 25px; color: #7f8c8d; font-size: 14px;">
+                Scripts update live as you type and change options
+            </p>
+            <div class="results-grid">
+                <div class="script-item">
+                    <div class="script-header">
+                        <div class="script-title">Detection Script</div>
+                        <div class="script-buttons">
+                            <button class="download-btn-script" onclick="downloadDetectionScript()">Download</button>
+                            <button class="copy-btn" onclick="copyToClipboard('detectionScript')">Copy</button>
+                        </div>
+                    </div>
+                    <div class="code-block" id="detectionScript"></div>
+                    <div class="script-note">Upload this .ps1 file as your detection rule in Intune</div>
+                </div>
+
+                <div class="script-item">
+                    <div class="script-header">
+                        <div class="script-title">Install Command</div>
+                        <div class="script-buttons">
+                            <button class="copy-btn" onclick="copyToClipboard('installCommand')">Copy</button>
+                        </div>
+                    </div>
+                    <div class="code-block" id="installCommand"></div>
+                    <div class="script-note">Use this command in Intune's install field</div>
+                </div>
+
+                <div class="script-item">
+                    <div class="script-header">
+                        <div class="script-title">Uninstall Command</div>
+                        <div class="script-buttons">
+                            <button class="copy-btn" onclick="copyToClipboard('uninstallCommand')">Copy</button>
+                        </div>
+                    </div>
+                    <div class="code-block" id="uninstallCommand"></div>
+                    <div class="script-note">Use this command in Intune's uninstall field</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="download-section">
+            <h2>Download WingetWingman</h2>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">Get the latest .intunewin file for deployment</p>
+            <a href="#" class="download-btn" id="downloadLink">Download Latest Release</a>
+            <p style="margin-top: 15px; color: #7f8c8d;">
+                <span id="versionInfo">Loading...</span> •
+                <a href="https://github.com/g0f/wingetwingman" target="_blank" class="github-link">View on GitHub</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLatestRelease();
+            updateScripts();
+            
+            // Add event listeners
+            document.getElementById('idInput').addEventListener('input', updateScripts);
+            document.getElementById('autoUpdateEnabled').addEventListener('change', updateScripts);
+            document.getElementById('interactiveUninstall').addEventListener('change', updateScripts);
+            document.getElementById('versionSpecific').addEventListener('change', toggleVersionInput);
+            document.getElementById('versionNumber').addEventListener('input', updateScripts);
+            document.getElementById('customArgs').addEventListener('change', toggleCustomInput);
+            document.getElementById('customInput').addEventListener('input', updateScripts);
+        });
+
+        function updateScripts() {
+            const packageId = document.getElementById('idInput').value.trim();
+            generateDetectionScript(packageId);
+            updateCommands(packageId);
+            
+            if (packageId && !packageId.includes('.')) {
+                showError('Winget IDs typically contain a dot (e.g., Google.Chrome). Please check the ID format.');
+            } else {
+                hideError();
+            }
+        }
+
+        function generateDetectionScript(packageId = '') {
+            const displayId = packageId || 'YourPackage.ID.Here';
+            const detectionScript = `# Sample Detection Script for WingetWingman
+# Original author: https://github.com/Romanitho/Winget-Install
+$AppToDetect = "${displayId}"
+
+Function Get-WingetCmd {
+    $WingetCmd = $null
+    try {
+        $WingetInfo = (Get-Item "$env:ProgramFiles\\WindowsApps\\Microsoft.DesktopAppInstaller_*_8wekyb3d8bbwe\\winget.exe").VersionInfo | Sort-Object -Property FileVersionRaw
+        $WingetCmd = $WingetInfo[-1].FileName
+    }
+    catch {
+        if (Test-Path "$env:LocalAppData\\Microsoft\\WindowsApps\\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\\winget.exe") {
+            $WingetCmd = "$env:LocalAppData\\Microsoft\\WindowsApps\\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\\winget.exe"
+        }
+    }
+    return $WingetCmd
+}
+
+$winget = Get-WingetCmd
+$JsonFile = "$env:TEMP\\InstalledApps.json"
+& $Winget export -o $JsonFile --accept-source-agreements | Out-Null
+$Json = Get-Content $JsonFile -Raw | ConvertFrom-Json
+$Packages = $Json.Sources.Packages
+Remove-Item $JsonFile -Force
+$Apps = $Packages | Where-Object { $_.PackageIdentifier -eq $AppToDetect }
+if ($Apps) {
+    return "Installed!"
+}`;
+            document.getElementById('detectionScript').textContent = detectionScript.trim();
+        }
+
+        function updateCommands(packageId = '') {
+            const displayId = packageId || 'yourwingetid';
+            const autoUpdate = document.getElementById('autoUpdateEnabled').checked;
+            const versionSpecific = document.getElementById('versionSpecific').checked;
+            const versionNumber = document.getElementById('versionNumber').value.trim();
+            const interactiveUninstall = document.getElementById('interactiveUninstall').checked;
+            const customArgs = document.getElementById('customArgs').checked;
+            const customInput = document.getElementById('customInput').value.trim();
+
+            let installCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Install -DeployMode Silent`;
+
+            if (versionSpecific && versionNumber) {
+                installCommand += ` -Version "${versionNumber}"`;
+            }
+
+            if (customArgs && customInput) {
+                installCommand += ` -Custom "${customInput}"`;
+            }
+
+            if (autoUpdate) {
+                installCommand += ' -AutoUpdate';
+            }
+
+            let uninstallCommand;
+            if (interactiveUninstall) {
+                uninstallCommand = `%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\PowerShell.exe -ExecutionPolicy Bypass -NoProfile -File Invoke-ServiceUI.ps1 -wingetID "${displayId}" -DeploymentType Uninstall`;
+            } else {
+                uninstallCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Uninstall -DeployMode Silent`;
+            }
+
+            document.getElementById('installCommand').textContent = installCommand.trim();
+            document.getElementById('uninstallCommand').textContent = uninstallCommand.trim();
+        }
+
+        function toggleVersionInput() {
+            const checkbox = document.getElementById('versionSpecific');
+            const row = document.getElementById('versionRow');
+            row.style.display = checkbox.checked ? 'flex' : 'none';
+            updateScripts();
+        }
+
+        function toggleCustomInput() {
+            const checkbox = document.getElementById('customArgs');
+            const row = document.getElementById('customRow');
+            const disclaimer = document.getElementById('customDisclaimer');
+            const isChecked = checkbox.checked;
+            
+            row.style.display = isChecked ? 'flex' : 'none';
+            disclaimer.style.display = isChecked ? 'block' : 'none';
+            updateScripts();
+        }
+
+        async function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                const scriptItem = element.closest('.script-item');
+                const btn = scriptItem.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+        }
+
+        function downloadDetectionScript() {
+            const packageId = document.getElementById('idInput').value.trim();
+            const scriptContent = document.getElementById('detectionScript').textContent;
+            const fileName = packageId ? `Detection_${packageId.replace(/\./g, '_')}.ps1` : 'Detection_Script.ps1';
+
+            const blob = new Blob([scriptContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            const btn = document.querySelector('.download-btn-script');
+            const originalText = btn.textContent;
+            btn.textContent = 'Downloaded!';
+            btn.classList.add('copied');
+
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied');
+            }, 2000);
+        }
+
+        async function loadLatestRelease() {
+            try {
+                const response = await fetch('https://api.github.com/repos/g0f/wingetwingman/releases/latest');
+                if (response.ok) {
+                    const release = await response.json();
+                    const downloadUrl = release.assets.find(asset => asset.name.endsWith('.intunewin'))?.browser_download_url || release.html_url;
+                    
+                    document.getElementById('downloadLink').href = downloadUrl;
+                    document.getElementById('versionInfo').textContent = `Version ${release.tag_name}`;
+                } else {
+                    throw new Error('Failed to fetch release');
+                }
+            } catch (error) {
+                document.getElementById('downloadLink').href = 'https://github.com/g0f/wingetwingman/releases';
+                document.getElementById('versionInfo').textContent = 'Visit GitHub releases';
+            }
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.classList.remove('hidden');
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
