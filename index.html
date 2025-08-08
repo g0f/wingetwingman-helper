@@ -456,6 +456,13 @@
 
                     <div class="option-group">
                         <label>
+                            <input type="checkbox" id="allowHashMismatch">
+                            Allow Hash Mismatch
+                        </label>
+                    </div>
+
+                    <div class="option-group">
+                        <label>
                             <input type="checkbox" id="versionSpecific">
                             Specific Version
                         </label>
@@ -550,6 +557,7 @@
             document.getElementById('autoUpdateEnabled').addEventListener('change', updateScripts);
             document.getElementById('interactiveInstall').addEventListener('change', updateScripts);
             document.getElementById('interactiveUninstall').addEventListener('change', updateScripts);
+            document.getElementById('allowHashMismatch').addEventListener('change', updateScripts);
             document.getElementById('versionSpecific').addEventListener('change', toggleVersionInput);
             document.getElementById('versionNumber').addEventListener('input', updateScripts);
             document.getElementById('customArgs').addEventListener('change', toggleCustomInput);
@@ -610,6 +618,7 @@ if ($Apps) {
             const interactiveUninstall = document.getElementById('interactiveUninstall').checked;
             const customArgs = document.getElementById('customArgs').checked;
             const customInput = document.getElementById('customInput').value.trim();
+            const allowHashMismatch = document.getElementById('allowHashMismatch').checked;
 
             // Build install command
             let installCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Install`;
@@ -630,6 +639,10 @@ if ($Apps) {
 
             if (autoUpdate) {
                 installCommand += ' -AutoUpdate';
+            }
+
+            if (allowHashMismatch) {
+                installCommand += ' -AllowHashMismatch';
             }
 
             // Build uninstall command
