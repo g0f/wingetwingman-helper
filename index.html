@@ -442,6 +442,13 @@
 
                     <div class="option-group">
                         <label>
+                            <input type="checkbox" id="interactiveInstall">
+                            Interactive Install
+                        </label>
+                    </div>
+
+                    <div class="option-group">
+                        <label>
                             <input type="checkbox" id="interactiveUninstall">
                             Interactive Uninstall
                         </label>
@@ -457,7 +464,7 @@
                         </div>
                     </div>
 
-                    <div class="option-group">
+                    <div class="option-group" style="grid-column: 1 / -1;">
                         <label>
                             <input type="checkbox" id="customArgs">
                             Custom Arguments
@@ -541,6 +548,7 @@
             // Add event listeners
             document.getElementById('idInput').addEventListener('input', updateScripts);
             document.getElementById('autoUpdateEnabled').addEventListener('change', updateScripts);
+            document.getElementById('interactiveInstall').addEventListener('change', updateScripts);
             document.getElementById('interactiveUninstall').addEventListener('change', updateScripts);
             document.getElementById('versionSpecific').addEventListener('change', toggleVersionInput);
             document.getElementById('versionNumber').addEventListener('input', updateScripts);
@@ -598,11 +606,19 @@ if ($Apps) {
             const autoUpdate = document.getElementById('autoUpdateEnabled').checked;
             const versionSpecific = document.getElementById('versionSpecific').checked;
             const versionNumber = document.getElementById('versionNumber').value.trim();
+            const interactiveInstall = document.getElementById('interactiveInstall').checked;
             const interactiveUninstall = document.getElementById('interactiveUninstall').checked;
             const customArgs = document.getElementById('customArgs').checked;
             const customInput = document.getElementById('customInput').value.trim();
 
-            let installCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Install -DeployMode Silent`;
+            // Build install command
+            let installCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Install`;
+            
+            if (interactiveInstall) {
+                installCommand += ' -DeployMode Interactive';
+            } else {
+                installCommand += ' -DeployMode Silent';
+            }
 
             if (versionSpecific && versionNumber) {
                 installCommand += ` -Version "${versionNumber}"`;
@@ -616,11 +632,13 @@ if ($Apps) {
                 installCommand += ' -AutoUpdate';
             }
 
-            let uninstallCommand;
+            // Build uninstall command
+            let uninstallCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Uninstall`;
+            
             if (interactiveUninstall) {
-                uninstallCommand = `%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\PowerShell.exe -ExecutionPolicy Bypass -NoProfile -File Invoke-ServiceUI.ps1 -wingetID "${displayId}" -DeploymentType Uninstall`;
+                uninstallCommand += ' -DeployMode Interactive';
             } else {
-                uninstallCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Uninstall -DeployMode Silent`;
+                uninstallCommand += ' -DeployMode Silent';
             }
 
             document.getElementById('installCommand').textContent = installCommand.trim();
