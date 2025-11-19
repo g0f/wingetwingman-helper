@@ -442,6 +442,13 @@
 
                     <div class="option-group">
                         <label>
+                            <input type="checkbox" id="blockSleep">
+                            Block Sleep
+                        </label>
+                    </div>
+
+                    <div class="option-group">
+                        <label>
                             <input type="checkbox" id="interactiveInstall">
                             Interactive Install
                         </label>
@@ -555,6 +562,7 @@
             // Add event listeners
             document.getElementById('idInput').addEventListener('input', updateScripts);
             document.getElementById('autoUpdateEnabled').addEventListener('change', updateScripts);
+            document.getElementById('blockSleep').addEventListener('change', updateScripts);
             document.getElementById('interactiveInstall').addEventListener('change', updateScripts);
             document.getElementById('interactiveUninstall').addEventListener('change', updateScripts);
             document.getElementById('allowHashMismatch').addEventListener('change', updateScripts);
@@ -612,6 +620,7 @@ if ($Apps) {
         function updateCommands(packageId = '') {
             const displayId = packageId || 'yourwingetid';
             const autoUpdate = document.getElementById('autoUpdateEnabled').checked;
+            const blockSleep = document.getElementById('blockSleep').checked;
             const versionSpecific = document.getElementById('versionSpecific').checked;
             const versionNumber = document.getElementById('versionNumber').value.trim();
             const interactiveInstall = document.getElementById('interactiveInstall').checked;
@@ -639,6 +648,10 @@ if ($Apps) {
 
             if (autoUpdate) {
                 installCommand += ' -AutoUpdate';
+            }
+
+            if (blockSleep) {
+                installCommand += ' -BlockSleep';
             }
 
             if (allowHashMismatch) {
