@@ -470,6 +470,16 @@
 
                     <div class="option-group">
                         <label>
+                            <input type="checkbox" id="enableInstallerLogging">
+                            Enable Installer Logging
+                        </label>
+                        <div style="font-size: 11px; color: #7f8c8d; margin-top: 4px;">
+                            Save WinGet installer logs for troubleshooting
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label>
                             <input type="checkbox" id="versionSpecific">
                             Specific Version
                         </label>
@@ -566,6 +576,7 @@
             document.getElementById('interactiveInstall').addEventListener('change', updateScripts);
             document.getElementById('interactiveUninstall').addEventListener('change', updateScripts);
             document.getElementById('allowHashMismatch').addEventListener('change', updateScripts);
+            document.getElementById('enableInstallerLogging').addEventListener('change', updateScripts);
             document.getElementById('versionSpecific').addEventListener('change', toggleVersionInput);
             document.getElementById('versionNumber').addEventListener('input', updateScripts);
             document.getElementById('customArgs').addEventListener('change', toggleCustomInput);
@@ -628,6 +639,7 @@ if ($Apps) {
             const customArgs = document.getElementById('customArgs').checked;
             const customInput = document.getElementById('customInput').value.trim();
             const allowHashMismatch = document.getElementById('allowHashMismatch').checked;
+            const enableInstallerLogging = document.getElementById('enableInstallerLogging').checked;
 
             // Build install command
             let installCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Install`;
@@ -658,6 +670,10 @@ if ($Apps) {
                 installCommand += ' -AllowHashMismatch';
             }
 
+            if (enableInstallerLogging) {
+                installCommand += ' -EnableInstallerLogging';
+            }
+
             // Build uninstall command
             let uninstallCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Uninstall`;
             
@@ -665,6 +681,10 @@ if ($Apps) {
                 uninstallCommand += ' -DeployMode Interactive';
             } else {
                 uninstallCommand += ' -DeployMode Silent';
+            }
+
+            if (enableInstallerLogging) {
+                uninstallCommand += ' -EnableInstallerLogging';
             }
 
             document.getElementById('installCommand').textContent = installCommand.trim();
