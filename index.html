@@ -12,147 +12,202 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #fafafa;
             min-height: 100vh;
-            color: #333;
-            line-height: 1.6;
+            color: #1a1a1a;
+            line-height: 1.7;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 60px 40px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 0;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 80px;
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: #2c3e50;
-            font-weight: 300;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
 
         .header p {
             font-size: 1.1rem;
-            color: #7f8c8d;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .card {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 30px;
-        }
-
-        .card h3 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-            font-size: 1.3rem;
+            color: #666;
             font-weight: 400;
         }
 
-        .guide-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 4px;
-            border-left: 3px solid #3498db;
+        .section {
+            margin-bottom: 60px;
         }
 
-        .methods-container {
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #999;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+        }
+
+        .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 24px;
         }
 
-        .method {
-            padding: 15px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-        }
-
-        .method h4 {
-            color: #3498db;
-            margin-bottom: 12px;
-            font-size: 1rem;
-            font-weight: 500;
+        .method-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 20px;
         }
 
         .steps {
             list-style: none;
-            counter-reset: step-counter;
         }
 
         .steps li {
-            counter-increment: step-counter;
-            margin-bottom: 8px;
-            padding-left: 25px;
+            margin-bottom: 12px;
+            padding-left: 24px;
             position: relative;
             font-size: 14px;
+            color: #444;
         }
 
         .steps li::before {
-            content: counter(step-counter);
+            content: '';
             position: absolute;
             left: 0;
-            top: 0;
-            background: #3498db;
-            color: white;
-            width: 18px;
-            height: 18px;
+            top: 8px;
+            width: 6px;
+            height: 6px;
+            background: #0066ff;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: bold;
         }
 
-        .id-container {
-            position: relative;
-            margin-bottom: 25px;
+        .code-inline {
+            background: #f5f5f5;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            margin: 12px 0;
+            font-size: 13px;
+            color: #333;
+            display: block;
+        }
+
+        .code-output {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 14px 16px;
+            border-radius: 6px;
+            font-family: 'SF Mono', monospace;
+            margin: 12px 0;
+            font-size: 12px;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .code-output .highlight {
+            color: #0066ff;
+            font-weight: 600;
+        }
+
+        .link-box {
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin: 16px 0;
+        }
+
+        .link-box a {
+            color: #0066ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .link-box a:hover {
+            text-decoration: underline;
+        }
+
+        .link-box span {
+            color: #888;
+            font-size: 13px;
+            margin-left: 8px;
         }
 
         .id-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
+            padding: 16px 20px;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #1a1a1a;
+            transition: all 0.2s ease;
+            margin-bottom: 32px;
+        }
+
+        .id-input::placeholder {
+            color: #999;
         }
 
         .id-input:focus {
             outline: none;
-            border-color: #3498db;
+            border-color: #0066ff;
+            background: #fff;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
         }
 
         .options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
         }
 
         .option-group {
-            padding: 12px;
+            padding: 16px;
             background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 4px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .option-group:hover {
+            background: #f0f4ff;
+        }
+
+        .option-group.active {
+            background: #e8efff;
+            box-shadow: inset 0 0 0 2px #0066ff;
         }
 
         .option-group label {
@@ -161,33 +216,87 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
+            color: #333;
         }
 
         .option-group input[type="checkbox"] {
-            margin-right: 8px;
-            transform: scale(1.1);
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            margin-right: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .option-group input[type="checkbox"]:checked {
+            background: #0066ff;
+            border-color: #0066ff;
+        }
+
+        .option-group input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .option-description {
+            font-size: 12px;
+            color: #888;
+            margin-top: 6px;
+            margin-left: 30px;
+        }
+
+        .option-group.full-width {
+            grid-column: 1 / -1;
         }
 
         .input-row {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 10px;
+            margin-left: 30px;
         }
 
         .version-input,
         .custom-input {
-            padding: 6px 10px;
+            padding: 8px 12px;
             border: 1px solid #ddd;
-            border-radius: 3px;
+            border-radius: 6px;
             flex: 1;
             font-size: 13px;
+            background: #fff;
         }
 
-        .results-section {
-            grid-column: 1 / -1;
-            border-top: 2px solid #f0f0f0;
-            padding-top: 30px;
+        .version-input:focus,
+        .custom-input:focus {
+            outline: none;
+            border-color: #0066ff;
+        }
+
+        .custom-disclaimer {
+            font-size: 12px;
+            color: #666;
+            margin-top: 12px;
+            margin-left: 30px;
+            line-height: 1.5;
+        }
+
+        .custom-disclaimer code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #d63384;
         }
 
         .results-grid {
@@ -197,23 +306,24 @@
         }
 
         .script-item {
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
+            background: #fff;
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
         }
 
         .script-header {
-            background: #34495e;
-            color: white;
-            padding: 12px 15px;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .script-title {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
         }
 
         .script-buttons {
@@ -224,147 +334,217 @@
         .copy-btn,
         .download-btn-script {
             background: transparent;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 4px 8px;
-            border-radius: 3px;
+            color: #0066ff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
-            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
         .copy-btn:hover,
         .download-btn-script:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: #f0f4ff;
         }
 
         .copy-btn.copied,
         .download-btn-script.copied {
-            background: #27ae60;
-            border-color: #27ae60;
+            background: #dcfce7;
+            color: #16a34a;
         }
 
         .code-block {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px;
-            font-family: 'Consolas', 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #e8e8e8;
+            padding: 20px;
+            font-family: 'SF Mono', 'Consolas', monospace;
             font-size: 12px;
-            line-height: 1.4;
-            overflow-x: auto;
+            line-height: 1.6;
             min-height: 100px;
             white-space: pre-wrap;
             word-wrap: break-word;
+            overflow-x: auto;
         }
 
-        .powershell-example {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 10px 12px;
-            border-radius: 3px;
-            font-family: 'Consolas', 'Courier New', monospace;
-            margin: 8px 0;
+        .script-note {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            color: #888;
             font-size: 12px;
-        }
-
-        .powershell-example .command {
-            color: #f39c12;
-        }
-
-        .powershell-output {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 10px 12px;
-            border-radius: 3px;
-            font-family: 'Consolas', 'Courier New', monospace;
-            margin: 8px 0;
-            font-size: 11px;
-            white-space: pre;
-        }
-
-        .powershell-output .highlight-red {
-            color: #e74c3c;
-            font-weight: bold;
         }
 
         .download-section {
             text-align: center;
-            background: #ecf0f1;
-            border: 1px solid #bdc3c7;
-            border-radius: 4px;
-            padding: 25px;
+            padding: 60px 40px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
         }
 
         .download-section h2 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-weight: 400;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1.4rem;
+        }
+
+        .download-section p {
+            color: #888;
+            margin-bottom: 24px;
         }
 
         .download-btn {
             display: inline-block;
-            background: #3498db;
+            background: #0066ff;
             color: white;
             text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 4px;
-            font-size: 16px;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 500;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         .download-btn:hover {
-            background: #2980b9;
+            background: #0052cc;
+            transform: translateY(-1px);
         }
 
-        .error-message {
-            background: #e74c3c;
-            color: white;
-            border-radius: 4px;
-            padding: 12px;
-            margin: 15px 0;
-            border: none;
+        .footer-info {
+            margin-top: 20px;
+            color: #888;
             font-size: 14px;
         }
 
-        .hidden {
-            display: none;
-        }
-
-        .github-link {
-            color: #7f8c8d;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .github-link:hover {
-            color: #3498db;
-        }
-
-        .script-note {
-            padding: 8px 15px;
-            background: #ecf0f1;
-            color: #7f8c8d;
-            font-size: 11px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        a {
-            color: #3498db;
+        .footer-info a {
+            color: #666;
             text-decoration: none;
         }
 
-        a:hover {
-            color: #2980b9;
+        .footer-info a:hover {
+            color: #0066ff;
         }
 
-        code {
-            background: #ecf0f1;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-size: 13px;
+        /* Responsive styles */
+        @media (max-width: 900px) {
+            .container {
+                padding: 40px 24px;
+            }
+
+            .header {
+                margin-bottom: 50px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 28px;
+            }
+
+            .download-section {
+                padding: 40px 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 16px;
+            }
+
+            .header {
+                margin-bottom: 40px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .section {
+                margin-bottom: 40px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .option-group label {
+                font-size: 13px;
+            }
+
+            .id-input {
+                padding: 14px 16px;
+                font-size: 14px;
+            }
+
+            .code-output {
+                font-size: 11px;
+                padding: 12px;
+            }
+
+            .script-header {
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .script-buttons {
+                width: 100%;
+            }
+
+            .script-buttons button {
+                flex: 1;
+            }
+
+            .code-block {
+                padding: 16px;
+                font-size: 11px;
+                min-height: 80px;
+            }
+
+            .script-note {
+                padding: 10px 16px;
+                font-size: 11px;
+            }
+
+            .download-section {
+                padding: 30px 20px;
+            }
+
+            .download-section h2 {
+                font-size: 1.2rem;
+            }
+
+            .download-btn {
+                padding: 12px 24px;
+                font-size: 14px;
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -372,63 +552,55 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>WingetWingman Helper</h1>
+            <h1>WingetWingman</h1>
             <p>Generate deployment scripts from winget package IDs</p>
         </div>
 
-        <div class="main-grid">
-            <!-- Left Column: How to Find IDs -->
+        <div class="section">
+            <div class="section-title">How to find package IDs</div>
             <div class="card">
-                <div class="guide-section">
-                    <h3>How to Find Winget Package IDs</h3>
+                <div class="two-column">
+                    <div>
+                        <div class="method-title">PowerShell</div>
+                        <ul class="steps">
+                            <li>Open PowerShell</li>
+                            <li>Search for your app</li>
+                        </ul>
+                        <code class="code-inline">winget search "7-zip"</code>
+                        <ul class="steps">
+                            <li>Copy the Id column value</li>
+                        </ul>
+                        <div class="code-output">Name      Id             Version  Source
+7-Zip     <span class="highlight">7zip.7zip</span>      24.09    winget</div>
+                    </div>
 
-                    <div class="methods-container">
-                        <div class="method">
-                            <h4>Method 1 - PowerShell</h4>
-                            <ol class="steps">
-                                <li>Open <strong>PowerShell</strong></li>
-                                <li>Search for your app:</li>
-                            </ol>
-                            <div class="powershell-example">
-                                <span class="prompt">PS C:\></span> <span class="command">winget search "7-zip"</span>
+                    <div>
+                        <div class="method-title">Online Tools</div>
+                        <ul class="steps">
+                            <li>Use a web-based package browser</li>
+                        </ul>
+                        <div class="link-box">
+                            <div style="margin-bottom: 8px;">
+                                <a href="https://winget.run" target="_blank">winget.run</a>
+                                <span>Popular package browser</span>
                             </div>
-                            <ol class="steps" style="counter-reset: step-counter 2;">
-                                <li>Copy the <strong>Id</strong> column value</li>
-                            </ol>
-                            <div class="powershell-output">Name      Id             Version  Source
-7-Zip     <span class="highlight-red">7zip.7zip</span>      24.09    winget</div>
-                        </div>
-
-                        <div class="method">
-                            <h4>Method 2 - Online Tools</h4>
-                            <ol class="steps">
-                                <li>Use one of these web tools to find packages:</li>
-                            </ol>
-                            <div style="margin: 10px 0; padding: 12px; background: #f8f9fa; border-radius: 4px; border-left: 3px solid #3498db;">
-                                <div style="margin-bottom: 8px;">
-                                    <a href="https://winget.run" target="_blank" style="color: #3498db; font-weight: 500; text-decoration: none;">winget.run</a>
-                                    <span style="color: #7f8c8d; font-size: 12px; margin-left: 8px;">- Popular package browser</span>
-                                </div>
-                                <div>
-                                    <a href="https://winstall.app" target="_blank" style="color: #3498db; font-weight: 500; text-decoration: none;">winstall.app</a>
-                                    <span style="color: #7f8c8d; font-size: 12px; margin-left: 8px;">- GUI for winget packages</span>
-                                </div>
+                            <div>
+                                <a href="https://winstall.app" target="_blank">winstall.app</a>
+                                <span>GUI for winget packages</span>
                             </div>
-                            <ol class="steps" style="counter-reset: step-counter 1;">
-                                <li>Search for your application</li>
-                                <li>Copy the package ID</li>
-                            </ol>
                         </div>
+                        <ul class="steps">
+                            <li>Search and copy the package ID</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Right Column: Package ID Input & Options -->
+        <div class="section">
+            <div class="section-title">Configuration</div>
             <div class="card">
-                <h3>Enter Package ID & Configure Options</h3>
-                <div class="id-container">
-                    <input type="text" class="id-input" placeholder="Enter winget package ID (e.g., 7zip.7zip)" id="idInput">
-                </div>
+                <input type="text" class="id-input" placeholder="Enter winget package ID (e.g., 7zip.7zip)" id="idInput">
 
                 <div id="errorMessage" class="error-message hidden"></div>
 
@@ -436,7 +608,7 @@
                     <div class="option-group">
                         <label>
                             <input type="checkbox" id="autoUpdateEnabled">
-                            Enable AutoUpdate
+                            AutoUpdate
                         </label>
                     </div>
 
@@ -464,18 +636,16 @@
                     <div class="option-group">
                         <label>
                             <input type="checkbox" id="allowHashMismatch">
-                            Allow Hash Mismatch
+                            Hash Mismatch
                         </label>
                     </div>
 
                     <div class="option-group">
                         <label>
                             <input type="checkbox" id="enableInstallerLogging">
-                            Enable Installer Logging
+                            Installer Logging
                         </label>
-                        <div style="font-size: 11px; color: #7f8c8d; margin-top: 4px;">
-                            Save WinGet installer logs for troubleshooting
-                        </div>
+                        <div class="option-description">Save logs for troubleshooting</div>
                     </div>
 
                     <div class="option-group">
@@ -488,32 +658,26 @@
                         </div>
                     </div>
 
-                    <div class="option-group" style="grid-column: 1 / -1;">
+                    <div class="option-group full-width">
                         <label>
                             <input type="checkbox" id="customArgs">
                             Custom Arguments
                         </label>
                         <div class="input-row" id="customRow" style="display: none;">
-                            <input type="text" class="custom-input" id="customInput">
+                            <input type="text" class="custom-input" id="customInput" placeholder="Enter custom arguments">
                         </div>
-                        <div id="customDisclaimer" style="display: none; margin-top: 8px; font-size: 11px; line-height: 1.3;">
-                            Custom arguments can be finicky - test carefully before deploying to end-users<br>
-                            Since Intune launches via CMD, enclose multiple arguments or strings with spaces in <span style="color: red;">escaped quotes</span>.<br><br>
-                            Example: <br><br> &quot;<span style="color: red;">\&quot;</span>network=internal.lan auto_update=true<span style="color: red;">\&quot;</span>&quot; <br><br>
-                            Use spaces to separate individual arguments within the quoted string. The outer quotation mark represents the beginning and end of the -Custom parameter. <br><br>
-                            The quotes for the Custom parameter will be added automatically to the Install command generated below. Just start and finish with <b>\&quot;</b> and you're set.
+                        <div id="customDisclaimer" class="custom-disclaimer" style="display: none;">
+                            Custom arguments can be finicky - test carefully before deploying.<br>
+                            Since Intune launches via CMD, enclose multiple arguments with <code>\"</code>escaped quotes<code>\"</code>.<br>
+                            Example: <code>\"network=internal.lan auto_update=true\"</code>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Results Section -->
-        <div class="card results-section">
-            <h3 style="text-align: center; margin-bottom: 15px;">Generated Scripts & Commands</h3>
-            <p style="text-align: center; margin-bottom: 25px; color: #7f8c8d; font-size: 14px;">
-                Scripts update live as you type and change options
-            </p>
+        <div class="section">
+            <div class="section-title">Generated Output</div>
             <div class="results-grid">
                 <div class="script-item">
                     <div class="script-header">
@@ -524,7 +688,7 @@
                         </div>
                     </div>
                     <div class="code-block" id="detectionScript"></div>
-                    <div class="script-note">Upload this .ps1 file as your detection rule in Intune</div>
+                    <div class="script-note">Upload as detection rule</div>
                 </div>
 
                 <div class="script-item">
@@ -535,7 +699,7 @@
                         </div>
                     </div>
                     <div class="code-block" id="installCommand"></div>
-                    <div class="script-note">Use this command in Intune's install field</div>
+                    <div class="script-note">Intune install field</div>
                 </div>
 
                 <div class="script-item">
@@ -546,20 +710,18 @@
                         </div>
                     </div>
                     <div class="code-block" id="uninstallCommand"></div>
-                    <div class="script-note">Use this command in Intune's uninstall field</div>
+                    <div class="script-note">Intune uninstall field</div>
                 </div>
             </div>
         </div>
 
-        <!-- Download Section -->
         <div class="download-section">
             <h2>Download WingetWingman</h2>
-            <p style="margin-bottom: 20px; color: #7f8c8d;">Get the latest .intunewin file for deployment</p>
+            <p>Get the latest .intunewin file for deployment</p>
             <a href="#" class="download-btn" id="downloadLink">Download Latest Release</a>
-            <p style="margin-top: 15px; color: #7f8c8d;">
-                <span id="versionInfo">Loading...</span> •
-                <a href="https://github.com/g0f/wingetwingman" target="_blank" class="github-link">View on GitHub</a>
-            </p>
+            <div class="footer-info">
+                <span id="versionInfo">Loading...</span> · <a href="https://github.com/g0f/wingetwingman" target="_blank">View on GitHub</a>
+            </div>
         </div>
     </div>
 
@@ -568,7 +730,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadLatestRelease();
             updateScripts();
-            
+
             // Add event listeners
             document.getElementById('idInput').addEventListener('input', updateScripts);
             document.getElementById('autoUpdateEnabled').addEventListener('change', updateScripts);
@@ -581,13 +743,20 @@
             document.getElementById('versionNumber').addEventListener('input', updateScripts);
             document.getElementById('customArgs').addEventListener('change', toggleCustomInput);
             document.getElementById('customInput').addEventListener('input', updateScripts);
+
+            // Add active class toggle for option groups
+            document.querySelectorAll('.option-group input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    this.closest('.option-group').classList.toggle('active', this.checked);
+                });
+            });
         });
 
         function updateScripts() {
             const packageId = document.getElementById('idInput').value.trim();
             generateDetectionScript(packageId);
             updateCommands(packageId);
-            
+
             if (packageId && !packageId.includes('.')) {
                 showError('Winget IDs typically contain a dot (e.g., Google.Chrome). Please check the ID format.');
             } else {
@@ -643,7 +812,7 @@ if ($Apps) {
 
             // Build install command
             let installCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Install`;
-            
+
             if (interactiveInstall) {
                 installCommand += ' -DeployMode Interactive';
             } else {
@@ -676,7 +845,7 @@ if ($Apps) {
 
             // Build uninstall command
             let uninstallCommand = `Invoke-AppDeployToolkit.exe -wingetID "${displayId}" -DeploymentType Uninstall`;
-            
+
             if (interactiveUninstall) {
                 uninstallCommand += ' -DeployMode Interactive';
             } else {
@@ -703,7 +872,7 @@ if ($Apps) {
             const row = document.getElementById('customRow');
             const disclaimer = document.getElementById('customDisclaimer');
             const isChecked = checkbox.checked;
-            
+
             row.style.display = isChecked ? 'flex' : 'none';
             disclaimer.style.display = isChecked ? 'block' : 'none';
             updateScripts();
@@ -718,7 +887,7 @@ if ($Apps) {
                 const scriptItem = element.closest('.script-item');
                 const btn = scriptItem.querySelector('.copy-btn');
                 const originalText = btn.textContent;
-                
+
                 btn.textContent = 'Copied!';
                 btn.classList.add('copied');
 
@@ -763,7 +932,7 @@ if ($Apps) {
                 if (response.ok) {
                     const release = await response.json();
                     const downloadUrl = release.assets.find(asset => asset.name.endsWith('.intunewin'))?.browser_download_url || release.html_url;
-                    
+
                     document.getElementById('downloadLink').href = downloadUrl;
                     document.getElementById('versionInfo').textContent = `Version ${release.tag_name}`;
                 } else {
