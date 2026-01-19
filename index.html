@@ -766,34 +766,30 @@
 
         function generateDetectionScript(packageId = '') {
             const displayId = packageId || 'YourPackage.ID.Here';
-            const detectionScript = `# Sample Detection Script for WingetWingman
-# Original author: https://github.com/Romanitho/Winget-Install
-$AppToDetect = "${displayId}"
+            const detectionScript = `$AppToDetect = "${displayId}"
 
 Function Get-WingetCmd {
-    $WingetCmd = $null
     try {
-        $WingetInfo = (Get-Item "$env:ProgramFiles\\WindowsApps\\Microsoft.DesktopAppInstaller_*_8wekyb3d8bbwe\\winget.exe").VersionInfo | Sort-Object -Property FileVersionRaw
-        $WingetCmd = $WingetInfo[-1].FileName
+        $WingetInfo = Get-Item "$env:ProgramFiles\\WindowsApps\\Microsoft.DesktopAppInstaller_*_8wekyb3d8bbwe\\winget.exe" -ErrorAction Stop |
+            Sort-Object { [version]($_.VersionInfo.FileVersionRaw) } -ErrorAction SilentlyContinue
+        return $WingetInfo[-1].FullName
     }
     catch {
-        if (Test-Path "$env:LocalAppData\\Microsoft\\WindowsApps\\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\\winget.exe") {
-            $WingetCmd = "$env:LocalAppData\\Microsoft\\WindowsApps\\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe\\winget.exe"
-        }
+        return $null
     }
-    return $WingetCmd
 }
 
 $winget = Get-WingetCmd
-$JsonFile = "$env:TEMP\\InstalledApps.json"
-& $Winget export -o $JsonFile --accept-source-agreements | Out-Null
-$Json = Get-Content $JsonFile -Raw | ConvertFrom-Json
-$Packages = $Json.Sources.Packages
-Remove-Item $JsonFile -Force
-$Apps = $Packages | Where-Object { $_.PackageIdentifier -eq $AppToDetect }
-if ($Apps) {
-    return "Installed!"
-}`;
+if (-not $winget) { exit 1 }
+
+$result = & $winget list --id $AppToDetect --exact --accept-source-agreements 2>$null
+
+if ($LASTEXITCODE -eq 0 -and $result -match [regex]::Escape($AppToDetect)) {
+    Write-Output "Installed!"
+    exit 0
+}
+
+exit 1`;
             document.getElementById('detectionScript').textContent = detectionScript.trim();
         }
 
