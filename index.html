@@ -183,6 +183,15 @@
             font-size: 14px;
         }
 
+        .warning-message {
+            background: #fff4d6;
+            color: #8a5a00;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
         .hidden {
             display: none;
         }
@@ -603,6 +612,7 @@
                 <input type="text" class="id-input" placeholder="Enter winget package ID (e.g., 7zip.7zip)" id="idInput">
 
                 <div id="errorMessage" class="error-message hidden"></div>
+                <div id="warningMessage" class="warning-message hidden"></div>
 
                 <div class="options-grid">
                     <div class="option-group">
@@ -610,6 +620,7 @@
                             <input type="checkbox" id="autoUpdateEnabled">
                             AutoUpdate
                         </label>
+                        <div class="option-description">Adds the app to the WAU whitelist</div>
                     </div>
 
                     <div class="option-group">
@@ -624,6 +635,7 @@
                             <input type="checkbox" id="interactiveInstall">
                             Interactive Install
                         </label>
+                        <div class="option-description">Not recommended for Intune production deployments</div>
                     </div>
 
                     <div class="option-group">
@@ -631,13 +643,15 @@
                             <input type="checkbox" id="interactiveUninstall">
                             Interactive Uninstall
                         </label>
+                        <div class="option-description">Not recommended for Intune production deployments</div>
                     </div>
 
                     <div class="option-group">
                         <label>
                             <input type="checkbox" id="allowHashMismatch">
-                            Hash Mismatch
+                            Ignore Hash Mismatch
                         </label>
+                        <div class="option-description">Troubleshooting only. Leaves hash verification behind.</div>
                     </div>
 
                     <div class="option-group">
@@ -689,6 +703,7 @@
                     </div>
                     <div class="code-block" id="detectionScript"></div>
                     <div class="script-note">Upload as detection rule</div>
+                    <div class="script-note">Use Intune custom detection and keep 32-bit mode off on 64-bit devices</div>
                 </div>
 
                 <div class="script-item">
@@ -756,6 +771,7 @@
             const packageId = document.getElementById('idInput').value.trim();
             generateDetectionScript(packageId);
             updateCommands(packageId);
+            updateWarnings();
 
             if (packageId && !packageId.includes('.')) {
                 showError('Winget IDs typically contain a dot (e.g., Google.Chrome). Please check the ID format.');
@@ -764,29 +780,194 @@
             }
         }
 
+        function updateWarnings() {
+            const warnings = [];
+
+            if (document.getElementById('interactiveInstall').checked || document.getElementById('interactiveUninstall').checked) {
+                warnings.push('Intune does not support interactive installs in production. Leave the interactive options off unless you are troubleshooting a specific package.');
+            }
+
+            if (document.getElementById('allowHashMismatch').checked) {
+                warnings.push('Hash mismatch bypass is a last resort. Use it only when you have already validated the package source and understand the risk.');
+            }
+
+            if (warnings.length > 0) {
+                showWarning(warnings.join(' '));
+            } else {
+                hideWarning();
+            }
+        }
+
         function generateDetectionScript(packageId = '') {
             const displayId = packageId || 'YourPackage.ID.Here';
-            const detectionScript = `$AppToDetect = "${displayId}"
+            const versionSpecific = document.getElementById('versionSpecific').checked;
+            const versionNumber = document.getElementById('versionNumber').value.trim();
+            const expectedVersion = versionSpecific && versionNumber ? versionNumber : '';
+            const detectionScript = `$PackageId = "${displayId}"
+$ExpectedVersion = "${expectedVersion}"
+$InventoryKey = "HKLM:\SOFTWARE\WingetWingman\Packages\$PackageId"
 
-Function Get-WingetCmd {
+$ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
+
+function Get-WingetCmd {
     try {
-        $WingetInfo = Get-Item "$env:ProgramFiles\\WindowsApps\\Microsoft.DesktopAppInstaller_*_8wekyb3d8bbwe\\winget.exe" -ErrorAction Stop |
-            Sort-Object { [version]($_.VersionInfo.FileVersionRaw) } -ErrorAction SilentlyContinue
-        return $WingetInfo[-1].FullName
+        $wingetInfo = Get-Item "$env:ProgramFiles\WindowsApps\Microsoft.DesktopAppInstaller*_8wekyb3d8bbwe\winget.exe" -ErrorAction Stop |
+            Sort-Object { [version]($_.VersionInfo.FileVersionRaw) } -Descending
+        return $wingetInfo[0].FullName
     }
     catch {
         return $null
     }
 }
 
-$winget = Get-WingetCmd
-if (-not $winget) { exit 1 }
+function Get-InstalledPackageFromWinget {
+    param (
+        [string]$PackageId,
+        [string]$WingetPath
+    )
 
-$result = & $winget list --id $AppToDetect --exact --accept-source-agreements 2>$null
+    try {
+        $output = & $WingetPath list --id $PackageId --exact --accept-source-agreements --disable-interactivity 2>$null
+        if ($LASTEXITCODE -ne 0 -or -not $output) {
+            return [pscustomobject]@{
+                Status = 'Unavailable'
+                Version = $null
+            }
+        }
 
-if ($LASTEXITCODE -eq 0 -and $result -match [regex]::Escape($AppToDetect)) {
-    Write-Output "Installed!"
+        foreach ($line in ($output -split [Environment]::NewLine)) {
+            $trimmedLine = $line.Trim()
+            if (-not $trimmedLine -or $trimmedLine -like 'Name*' -or $trimmedLine -like '---*') {
+                continue
+            }
+
+            $columns = $trimmedLine -split '\s{2,}'
+            if ($columns.Count -lt 3) {
+                continue
+            }
+
+            $packageIndex = -1
+            for ($i = 0; $i -lt $columns.Count; $i++) {
+                if ($columns[$i] -eq $PackageId) {
+                    $packageIndex = $i
+                    break
+                }
+            }
+
+            if ($packageIndex -lt 0) {
+                continue
+            }
+
+            $versionIndex = $packageIndex + 1
+            $version = if ($columns.Count -gt $versionIndex) {
+                $columns[$versionIndex].Trim()
+            }
+            else {
+                $null
+            }
+
+            return [pscustomobject]@{
+                Status = 'Found'
+                Version = $version
+            }
+        }
+
+        return [pscustomobject]@{
+            Status = 'NotFound'
+            Version = $null
+        }
+    }
+    catch {
+        return [pscustomobject]@{
+            Status = 'Unavailable'
+            Version = $null
+        }
+    }
+}
+
+function Get-WingetWingmanInventory {
+    param (
+        [string]$InventoryKey
+    )
+
+    try {
+        if (-not (Test-Path -LiteralPath $InventoryKey)) {
+            return $null
+        }
+
+        $packageInfo = Get-ItemProperty -LiteralPath $InventoryKey
+        return [pscustomobject]@{
+            DetectedVersion = [string]$packageInfo.DetectedVersion
+            RequestedVersion = [string]$packageInfo.RequestedVersion
+        }
+    }
+    catch {
+        return $null
+    }
+}
+
+function Test-VersionMatch {
+    param (
+        [string]$DetectedVersion,
+        [string]$ExpectedVersion
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ExpectedVersion)) {
+        return $true
+    }
+
+    if ([string]::IsNullOrWhiteSpace($DetectedVersion)) {
+        return $false
+    }
+
+    return $DetectedVersion.Trim() -eq $ExpectedVersion.Trim()
+}
+
+function Write-DetectionSuccess {
+    param (
+        [string]$Version
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Version)) {
+        Write-Output 'Installed'
+    }
+    else {
+        Write-Output "Installed ($Version)"
+    }
+
     exit 0
+}
+
+$winget = Get-WingetCmd
+if ($winget) {
+    $installedPackage = Get-InstalledPackageFromWinget -PackageId $PackageId -WingetPath $winget
+
+    if ($installedPackage.Status -eq 'Found') {
+        if (Test-VersionMatch -DetectedVersion $installedPackage.Version -ExpectedVersion $ExpectedVersion) {
+            Write-DetectionSuccess -Version $installedPackage.Version
+        }
+
+        exit 1
+    }
+
+    if ($installedPackage.Status -eq 'NotFound') {
+        exit 1
+    }
+}
+
+$fallbackPackage = Get-WingetWingmanInventory -InventoryKey $InventoryKey
+if ($fallbackPackage) {
+    $fallbackVersion = if (-not [string]::IsNullOrWhiteSpace($fallbackPackage.DetectedVersion)) {
+        $fallbackPackage.DetectedVersion
+    }
+    else {
+        $fallbackPackage.RequestedVersion
+    }
+
+    if (Test-VersionMatch -DetectedVersion $fallbackVersion -ExpectedVersion $ExpectedVersion) {
+        Write-DetectionSuccess -Version $fallbackVersion
+    }
 }
 
 exit 1`;
@@ -901,7 +1082,7 @@ exit 1`;
             const scriptContent = document.getElementById('detectionScript').textContent;
             const fileName = packageId ? `Detection_${packageId.replace(/\./g, '_')}.ps1` : 'Detection_Script.ps1';
 
-            const blob = new Blob([scriptContent], { type: 'text/plain' });
+            const blob = new Blob(['\uFEFF', scriptContent], { type: 'text/plain;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -948,6 +1129,16 @@ exit 1`;
 
         function hideError() {
             document.getElementById('errorMessage').classList.add('hidden');
+        }
+
+        function showWarning(message) {
+            const warningEl = document.getElementById('warningMessage');
+            warningEl.textContent = message;
+            warningEl.classList.remove('hidden');
+        }
+
+        function hideWarning() {
+            document.getElementById('warningMessage').classList.add('hidden');
         }
     </script>
 </body>
