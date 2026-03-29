@@ -377,6 +377,12 @@
             overflow-x: auto;
         }
 
+        .code-block.scrollable-script {
+            max-height: 360px;
+            overflow-y: auto;
+            scrollbar-gutter: stable;
+        }
+
         .script-note {
             padding: 12px 20px;
             background: #f8f9fa;
@@ -701,7 +707,7 @@
                             <button class="copy-btn" onclick="copyToClipboard('detectionScript')">Copy</button>
                         </div>
                     </div>
-                    <div class="code-block" id="detectionScript"></div>
+                    <div class="code-block scrollable-script" id="detectionScript"></div>
                     <div class="script-note">Upload as detection rule</div>
                     <div class="script-note">Use Intune custom detection and keep 32-bit mode off on 64-bit devices</div>
                 </div>
